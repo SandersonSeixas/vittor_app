@@ -124,7 +124,7 @@ app.*.symbols
 
 # Ignorar build/artefatos binários grandes
 linux/flutter/ephemeral/
-macos/flutter/ephemeral/
+macos/Flutter/ephemeral/
 windows/flutter/ephemeral/
 
 # IDEs
