@@ -39,7 +39,11 @@ analysis_benchmark.json
 **/generated_plugin_registrant.dart
 .packages
 .pub-preload-cache/
+.pub-cache/
 .pub/
+.flutter-plugins-dependecies
+.flutter-version
+.mel
 build/
 flutter_*.png
 linked_*.ds
@@ -117,3 +121,26 @@ app.*.symbols
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 !/dev/ci/**/Gemfile.lock
+
+# Ignorar build/artefatos binários grandes
+linux/flutter/ephemeral/
+macos/flutter/ephemeral/
+windows/flutter/ephemeral/
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+
+# SOs
+.DS_Store
+Thumbs.db
+local.txt
+
+# Compilações nativas
+*.so
+*.dll
+*.dylib
+*.exe
+*.apk
+*.ipa
