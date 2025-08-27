@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../services/api_services.dart';
 import '../widgets/top_carousel.dart';
 import '../widgets/last_acquisitions.dart';
+
 // --- import 'package:carousel_slider/carousel_slider.dart';
 //....................................................
 // LandPage do aplicativo
@@ -35,9 +36,16 @@ class _HomeScreenState extends State<HomeScreen> {
     try {
       final t = await ApiService.fetchTopRevistas();
       final u = await ApiService.fetchUltimasRevistas();
-      setState(() { top = t; ultimas = u; loading = false; });
+      setState(() {
+        top = t;
+        ultimas = u;
+        loading = false;
+      });
     } catch (e) {
-      setState(() { loading = false; error = e.toString(); });
+      setState(() {
+        loading = false;
+        error = e.toString();
+      });
     }
   }
 
@@ -48,10 +56,15 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> _abrirRevista(int id) async {
     // registra acesso e depois abre URL do PDF (poderia navegar para uma tela de leitura)
     await ApiService.registrarAcesso(id);
-    final revista = [...top, ...ultimas].firstWhere((r) => r['id'] == id, orElse: () => null);
+    final revista = [
+      ...top,
+      ...ultimas,
+    ].firstWhere((r) => r['id'] == id, orElse: () => null);
     if (revista != null && mounted) {
       final url = revista['arquivo'] as String;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Abrindo: $url')));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Abrindo: $url')));
       // TODO: abir em WebView / url_launcher
     }
   }
@@ -77,13 +90,13 @@ class _HomeScreenState extends State<HomeScreen> {
             onPressed: _abrirLogin,
             icon: const Icon(Icons.login, color: Colors.white),
             label: const Text('Login', style: TextStyle(color: Colors.white)),
-          )
+          ),
         ],
       ),
       body: RefreshIndicator(
         onRefresh: _load,
         child: ListView(
-          children [
+          children: [
             TopCarousel(revistas: top, onTap: _abrirRevista),
             const SizedBox(height: 12),
             LastAcquisitions(revistas: ultimas, onTap: _abrirRevista),
@@ -116,8 +129,15 @@ class _LoginDialogState extends State<_LoginDialog> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          TextField(controller: emailCtrl, decoration: const InputDecoration(labelText: 'E-mail')),
-          TextField(controller: senhaCtrl, decoration: const InputDecoration(labelText: 'Senha'), obscureText: true),
+          TextField(
+            controller: emailCtrl,
+            decoration: const InputDecoration(labelText: 'E-mail'),
+          ),
+          TextField(
+            controller: senhaCtrl,
+            decoration: const InputDecoration(labelText: 'Senha'),
+            obscureText: true,
+          ),
           const SizedBox(height: 8),
           DropdownButtonFormField<String>(
             value: perfil,
@@ -129,41 +149,69 @@ class _LoginDialogState extends State<_LoginDialog> {
             onChanged: (v) => setState(() => perfil = v!),
             decoration: const InputDecoration(labelText: 'Perfil'),
           ),
-          if (error != null) Padding(
-            padding: const EdgeInsets.only(top: 8),
-            child: Text(error!, style: const TextStyle(color: Colors.red)),
-          ),
+          if (error != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Text(error!, style: const TextStyle(color: Colors.red)),
+            ),
         ],
       ),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancelar')),
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancelar'),
+        ),
         ElevatedButton(
-          onPressed: loading ? null : () async {
-            setState(() { loading = true; error = null; });
-            try {
-              final r = await ApiService.login(emailCtrl.text.trim(), senhaCtrl.text);
-              if (r['success'] == true) {
-                // validar perfil.. se quiser: if (r['usuario']['perfil'] != perfil) ...
-                if (mounted) {
-                  Navigator.pop(context);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Bem-vindo(a), ${r['usuario']['nome']} (${r['usuario']['perfil']})'))
-                  );
-                  // TODO: navegar para a tela específica do perfil...
-                }
-            } else {
-              setState(() { error = r['message'] ?? 'Falha no login'; });
-            }
-        } catch (e) {
-          setState(() { error = e.toString(); });
-        } finally {
-          if (mounted) setState(() { loading = false; });
-        }
-      },
-      child: loading ? const SizedBox(height: 16, width: 16, child: CircularProgressIndicator(strokeWidth: 2))
-                     : const Text('Entrar'),
-     )
-    ],
-   );
+          onPressed: loading
+              ? null
+              : () async {
+                  setState(() {
+                    loading = true;
+                    error = null;
+                  });
+                  try {
+                    final r = await ApiService.login(
+                      emailCtrl.text.trim(),
+                      senhaCtrl.text,
+                    );
+                    if (r['success'] == true) {
+                      // validar perfil.. se quiser: if (r['usuario']['perfil'] != perfil) ...
+                      if (mounted) {
+                        Navigator.pop(context);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'Bem-vindo(a), ${r['usuario']['nome']} (${r['usuario']['perfil']})',
+                            ),
+                          ),
+                        );
+                        // TODO: navegar para a tela específica do perfil...
+                      }
+                    } else {
+                      setState(() {
+                        error = r['message'] ?? 'Falha no login';
+                      });
+                    }
+                  } catch (e) {
+                    setState(() {
+                      error = e.toString();
+                    });
+                  } finally {
+                    if (mounted) {}
+                    setState(() {
+                      loading = false;
+                    });
+                  }
+                },
+          child: loading
+              ? const SizedBox(
+                  height: 16,
+                  width: 16,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                )
+              : const Text('Entrar'),
+        ),
+      ],
+    );
   }
 }
