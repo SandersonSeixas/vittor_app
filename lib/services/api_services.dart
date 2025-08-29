@@ -2,7 +2,7 @@
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 //......................................
 // API REST de consumo do aplicativo
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -12,27 +12,27 @@ import 'package:http/http.dart' as http;
 // Author: Sanderson
 // Date..: 27/08/2025
 //===================
-// Alter by:
-// on Date.:
+// Alter by: Sanderson
+// on Date.: 28/08/2025
 //====================
 class ApiService {
-  static const String BASE_URL = 'https://samsxs.net.br/flutter/vittor/api';
+  static final String baseUrl = dotenv.env['API_BASE_URL'] ?? '';
 
   static Future<List<dynamic>> fetchTopRevistas() async {
-    final r = await http.get(Uri.parse('$BASE_URL/getTopRevistas.php'));
+    final r = await http.get(Uri.parse('$baseUrl/getTopRevistas.php'));
     if (r.statusCode == 200) return jsonDecode(r.body) as List;
     throw Exception('Erro ao buscar Top Revistas');
   }
 
   static Future<List<dynamic>> fetchUltimasRevistas() async {
-    final r = await http.get(Uri.parse('$BASE_URL/getUltimasRevistas.php'));
+    final r = await http.get(Uri.parse('$baseUrl/getUltimasRevistas.php'));
     if (r.statusCode == 200) return jsonDecode(r.body) as List;
     throw Exception('Erro ao buscar Últimas Aquisições');
   }
 
   static Future<Map<String, dynamic>> login(String email, String senha) async {
     final r = await http.post(
-      Uri.parse('$BASE_URL/login.php'),
+      Uri.parse('$baseUrl/login.php'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({"email": email, "senha": senha}),
     );
@@ -41,7 +41,7 @@ class ApiService {
   }
 
   static Future<bool> registrarAcesso(int id) async {
-    final r = await http.get(Uri.parse('$BASE_URL/registrarAcesso.php?id=$id'));
+    final r = await http.get(Uri.parse('$baseUrl/registrarAcesso.php?id=$id'));
     if (r.statusCode == 200) {
       final m = jsonDecode(r.body);
       return m['success'] == true;

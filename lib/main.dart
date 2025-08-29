@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'home/home.view.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import './pages/splash_screen.dart';
 //....................................................
 // Main / BRANCH PARA OS DEMAIS ALUNOS, INCLUSIVE VOCÊ
 // ^^^^^
@@ -9,8 +10,9 @@ import 'home/home.view.dart';
 // Data  : 27/08/2025
 //=========================================
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env"); // Carrega as variáveis de ambiente
   runApp(const MyApp());
 }
 
@@ -25,9 +27,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         // This is the theme of your application.
         useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        primarySwatch: Colors.purple,
       ),
-      home: const HomeScreen(),
+      home: SplashScreen(),
       debugShowCheckedModeBanner: false,
     );
   }

@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import '../services/api_services.dart';
 import '../widgets/top_carousel.dart';
 import '../widgets/last_acquisitions.dart';
-
-// --- import 'package:carousel_slider/carousel_slider.dart';
 //....................................................
 // LandPage do aplicativo
 // ^^^^^^^^^^^^^^^^^^^^^^
