@@ -57,7 +57,7 @@ dev_dependencies:
 # splash screen configs
 flutter_native_splash:
   color: "#ffffff" # Background color
-  image: "assets/img/logoLibrary.png"
+  image: "assets/img/logo.png"
   android: true
   ios: true
   fullscreen: true

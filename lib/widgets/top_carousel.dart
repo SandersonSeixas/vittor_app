@@ -41,10 +41,11 @@ class TopCarousel extends StatelessWidget {
                 child: Stack(
                   fit: StackFit.expand,
                   children: [
-                    Image.network(r['capa'], fit: BoxFit.cover),
+                    Image.network(r['capa'], fit: BoxFit.cover, alignment: Alignment.topCenter),
                     Positioned(
                       left: 0, right: 0, bottom: 0,
                       child: Container(
+                        height: 200,
                         padding: const EdgeInsets.all(8),
                         color: Colors.black54,
                         child: Text(r['titulo'], maxLines: 1, overflow: TextOverflow.ellipsis,

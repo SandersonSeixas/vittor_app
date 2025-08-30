@@ -28,7 +28,7 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.flash_on, size: 80, color: Colors.blue),
+            Image.asset('assets/img/logo.png'),
             SizedBox(height: 20),
             Text('Carregando...', style: TextStyle(fontSize: 18)),
             SizedBox(height: 20),
